@@ -1,0 +1,25 @@
+@media (max-width: 411px) {
+    .massMover {
+        padding-top: 140px;
+        margin-left: 60px;
+        padding-bottom: 10px;
+    }
+}
+
+@media (min-width: 412px) {
+    .massMover {
+        padding-top: 140px;
+        margin-left: 200px;
+        padding-bottom: 10px;
+    }
+}
+
+.contactMover {
+    margin-left: 60px;
+    padding-bottom: 10px;
+}
+.addressMover {
+    margin-top: 10px;
+    margin-left: 60px;
+    margin-bottom: 40px;
+}
