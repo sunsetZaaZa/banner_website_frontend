@@ -1,3 +1,57 @@
+@font-face{
+  font-family: "ChakraPetch";
+  src:local("ChakraPetchRegular"),
+  url('./assets/fonts/ChakraPetchRegular.otf') 
+}
+
+@font-face{
+  font-family: "CorneritaBlack";
+  src:local("CorneritaBlack"),
+  url('./assets/fonts/CorneritaBlack.ttf') 
+}
+
+@font-face{
+  font-family: "CorneritaBold";
+  src:local("CorneritaBold"),
+  url('./assets/fonts/CorneritaBold.ttf') 
+}
+
+@font-face{
+  font-family: "CorneritaRegular";
+  src:local("CorneritaRegular"),
+  url('./assets/fonts/CorneritaRegular.ttf') 
+}
+
+@font-face{
+  font-family: "CorneritaThin";
+  src:local("CorneritaThin"),
+  url('./assets/fonts/CorneritaThin.ttf') 
+}
+
+@font-face{
+  font-family: "CorneritaVF";
+  src:local("CorneritaVF"),
+  url('./assets/fonts/CorneritaVF.ttf') 
+}
+
+@font-face{
+  font-family: "SanghaKali";
+  src:local("SanghaKaliRegular"),
+  url('./assets/fonts/SanghaKaliRegular.otf') 
+}
+
+@font-face{
+  font-family: "ShareTech";
+  src:local("ShareTechMono"),
+  url('./assets/fonts/ShareTechMono.otf') 
+}
+
+@font-face{
+  font-family: "SimpleSquare";
+  src:local("SimpleSquareRegular"),
+  url('./assets/fonts/SimpleSquareRegular.otf') 
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -11,4 +65,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+   font-Family: 'ChakraPetch';
 }
+

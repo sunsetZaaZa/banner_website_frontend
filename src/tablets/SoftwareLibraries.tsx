@@ -1,4 +1,5 @@
-import './scss/OuterfacingBusinessContact.scss';
+import { Link, useNavigate } from "react-router";
+import './scss/SoftwareLibraries.scss';
 
 import type { RootState } from '../state-management/store';
 import { useSelector } from 'react-redux';
@@ -11,15 +12,15 @@ import { UIBranches } from '../state-management/models/UIBranches';
 import { TypeOfCharacter } from '../state-management/models/CharacterStats';
 import { BlimpDirectedRight } from '../components/Blimp/BlimpDirectedRight';
 import { BlimpDirectedLeft } from '../components/Blimp/BlimpDirectedLeft';
-import { Crunch } from '../components/Crunch/Crunch';
+import { Crunch } from "../components/Crunch/Crunch";
 
-
-export default function OuterfacingBusinessContact() {
+export default function SoftwareLibraries() {
     let charStats = useSelector((state: RootState) => state.animation);
+    let navigate = useNavigate();
 
     let autoGen = [];
     if(charStats != undefined) {
-        charStats.characterTracker.get(UIBranches.contact).forEach((entry, index) => {
+        charStats.characterTracker.get(UIBranches.libraries).forEach((entry, index) => {
             if(entry.type == TypeOfCharacter.rightBlimp) {
                 autoGen.push(<BlimpDirectedRight key={index} currentX={entry.currentX} currentY={entry.currentY}></BlimpDirectedRight>)
             } else if(entry.type == TypeOfCharacter.leftBlimp) {
@@ -30,14 +31,14 @@ export default function OuterfacingBusinessContact() {
         }); 
     } else {
         const details : BlimpCrunchCords = {
-            crunchY: undefined,
-            crunchX: undefined,
+            crunchY: 30,
+            crunchX: 78,
             blimpNormY: 20,
             blimpNormX: 120,
             blimpNormAnotherY: 15,
             blimpNormAnotherX: 420,
-            blimpReversedY: 400,
-            blimpReversedX: 60
+            blimpReversedY: 250,
+            blimpReversedX: 20
         }
         autoGen.push(<BlimpsNCrunch {...details}></BlimpsNCrunch>)
     }
@@ -46,19 +47,18 @@ export default function OuterfacingBusinessContact() {
         <span>
             <NavGuide></NavGuide>
             {autoGen}
-            <div className="massMover">              
-                <div className="contactMover">
-                    <span style={{display: 'flex', flexDirection: 'column', alignContent: 'flex-start'}}> 
-                        <span style={{fontSize: '16px', color: "grey"}}>Email Address</span>
-                        <span style={{paddingLeft: '10px'}}>contact@wickerblocks.com</span> 
-                    </span>            
-                </div>
-                <div className="addressMover">
-                    <span style={{display: 'flex', flexDirection: 'column'}}> 
-                        <span>Wickerblocks</span>
-                        <span style={{marginTop: '-2px', paddingLeft: '10px'}}>Memphis, TN</span>
+            <div className="mobileAppsMassMover">                
+                <span style={{display: 'flex', flexDirection: 'column'}}>
+                    <span>
+                        <Link style={{ marginLeft: '40px', fontSize: '20px' }} className='btn_cceia' to="/software_libraries/cceia">CCEIA</Link>
+                        <span style={{display: 'flex', flexDirection: 'column', marginLeft: '10px', cursor: 'pointer' }} onClick={() => { navigate("/software_libraries/cceia") }}>
+                            <span style={{fontSize: '14px'}}>Contacts</span>
+                            <span style={{fontSize: '14px'}}>Calendar</span>
+                            <span style={{fontSize: '14px'}}>Events</span>
+                            <span style={{fontSize: '14px'}}>iOS & Android</span>
+                        </span>
                     </span>
-                </div>
+                </span>
             </div>
         </span>
     )

@@ -2,7 +2,7 @@ import NavGuide from "../components/NavGuide/NavGuide";
 
 export default function WorkshopTools() {
     return (
-        <>
+        <span>
             <NavGuide></NavGuide>
 
             <div style={{paddingTop: '125px', marginLeft: '200px', fontWeight: "bold"}}>Flutter UI Design & Implementation with Android & iOS native libary support</div>
@@ -218,6 +218,6 @@ export default function WorkshopTools() {
                     Stress test entire and sub-systems of software ecosystem with crafted HTTP, gRPC, or another transfer layer to benchmark performance for insight into the software package's characteristics 
                 </li>
             </ul>
-        </>
+        </span>
     );
 }
