@@ -7,8 +7,9 @@ import { RootState } from '../../state-management/store';
 import { Dispatch } from '@reduxjs/toolkit';
 
 import { nextFrame, updateToken } from '../../state-management/slices/AnimationSlice';
-import { UIBranches } from '../../state-management/models/UIBranches';
+import { UIBranch } from '../../state-management/models/UIBranch';
 import { CharacterStats } from '../../state-management/models/CharacterStats';
+import { CharacterTracker } from '../../state-management/slices/presets/AnimationPreset';
 
 export default function NavGuide() {
     let charStats = useSelector((state: RootState) => state.animation);
@@ -17,40 +18,48 @@ export default function NavGuide() {
     return (
         <ul className="navGuideMover">
             <li className="NavTopic">
-                <Link onClick={() => { EngineCycle(dispatch, charStats.currentPage, charStats.identifier, UIBranches.homepage) }} style={{ fontFamily: 'ShareTech', textDecoration: 'none', color: 'inherit', fontSize: '18px', marginLeft: '-6px' }} to="/">wickerblocks</Link>
+                <Link onClick={() => { EngineCycle(dispatch, charStats.currentPage, charStats.identifier, UIBranch.homepage) }} style={{ fontFamily: 'ShareTech', textDecoration: 'none', color: 'inherit', fontSize: '18px', marginLeft: '-6px' }} to="/">wickerblocks</Link>
             </li>
             <li className="NavEntry">
-                <Link onClick={() => { EngineCycle(dispatch, charStats.currentPage, charStats.identifier, UIBranches.mobileapps) }} style={{ textDecoration: 'none', color: 'inherit' }} to="/mobileapps">mobile apps</Link>
+                <Link onClick={() => { EngineCycle(dispatch, charStats.currentPage, charStats.identifier, UIBranch.mobileapps) }} style={{ textDecoration: 'none', color: 'inherit' }} to="/mobileapps">mobile apps</Link>
                 </li>
             <li className="NavEntry">
-                <Link onClick={() => { EngineCycle(dispatch, charStats.currentPage, charStats.identifier, UIBranches.consulting) }} style={{ textDecoration: 'none', color: 'inherit' }} to="/consulting">consulting</Link>
+                <Link onClick={() => { EngineCycle(dispatch, charStats.currentPage, charStats.identifier, UIBranch.consulting) }} style={{ textDecoration: 'none', color: 'inherit' }} to="/consulting">consulting</Link>
             </li>
             <li className="NavEntry">
-                <Link onClick={() => { EngineCycle(dispatch, charStats.currentPage, charStats.identifier, UIBranches.libraries) }} style={{ textDecoration: 'none', color: 'inherit' }} to="/software_libaries">libraries</Link>
+                <Link onClick={() => { EngineCycle(dispatch, charStats.currentPage, charStats.identifier, UIBranch.libraries) }} style={{ textDecoration: 'none', color: 'inherit' }} to="/software_libaries">libraries</Link>
             </li>
             <li className="NavEntry">
-                <Link onClick={() => { EngineCycle(dispatch, charStats.currentPage, charStats.identifier, UIBranches.contact) }} style={{ textDecoration: 'none', color: 'inherit' }} to="/about">contact</Link>
+                <Link onClick={() => { EngineCycle(dispatch, charStats.currentPage, charStats.identifier, UIBranch.contact) }} style={{ textDecoration: 'none', color: 'inherit' }} to="/about">contact</Link>
             </li>
         </ul>
     )
 }
 
-const EngineCycle = (dispatch: Dispatch, currentPage: UIBranches, currentIdentifier: number, uiBranch: UIBranches) => {
+const EngineCycle = (dispatch: Dispatch, currentPage: UIBranch, currentIdentifier: number, uiBranch: UIBranch) => {
     if(currentPage == uiBranch && currentIdentifier != -1) { //animation should still be running until complete / no change in character stats
 
     } else if(currentPage == uiBranch && currentIdentifier== -1) { 
         let identifier: number = setInterval(() => {
-            let charStats: Map<UIBranches, CharacterStats[]> = useSelector((state: RootState) => state.animation.characterTracker);
+            let charTrackers: CharacterTracker[] = useSelector((state: RootState) => state.animation.characterTracker);
+            let index: number = charTrackers.findIndex(entry => entry.page == uiBranch)
+            let charStats: CharacterStats[] = charTrackers[index].chars;
 
-            updatedChars = engineUpdate(charStats, uiBranch)
+            let next_game_tick: DOMHighResTimeStamp = performance.now()
 
+            let updatedChars: CharacterStats[];
+            while() { //implement your frame pacing here
+                updatedChars = engineUpdate(charStats, uiBranch)
+            }
+
+            //implement your frame pacing here as well
             let forwardResult: EngineForwardResult = engineForward(updatedChars, uiBranch);
 
             if(forwardResult.moveComplete) {
                 clearInterval(identifier);
             }
 
-            dispatch(nextFrame(updatedChars));
+            dispatch(nextFrame({uiBranch: currentPage, charStats: updatedChars}));
         });
         dispatch(updateToken({token: identifier, currentPage: uiBranch}));
     } else if(currentPage != uiBranch && currentIdentifier != -1) {
@@ -58,34 +67,52 @@ const EngineCycle = (dispatch: Dispatch, currentPage: UIBranches, currentIdentif
         dispatch(updateToken({token:-1, currentPage: undefined}));
 
         let identifier: number = setInterval(() => {
-            let charStats: Map<UIBranches, CharacterStats[]> = useSelector((state: RootState) => state.animation.characterTracker);
+            let charTrackers: CharacterTracker[] = useSelector((state: RootState) => state.animation.characterTracker);
+            let index: number = charTrackers.findIndex(entry => entry.page == uiBranch)
+            let charStats: CharacterStats[] = charTrackers[index].chars;
 
-            updatedChars = engineUpdate(charStats, uiBranch)
+            let next_game_tick: DOMHighResTimeStamp = performance.now()
 
+            let updatedChars: CharacterStats[];
+            while() { //implement your frame pacing here
+                updatedChars = engineUpdate(charStats, uiBranch)
+            }
+
+            //implement your frame pacing here as well
             let forwardResult: EngineForwardResult = engineForward(updatedChars, uiBranch);
 
             if(forwardResult.moveComplete) {
                 clearInterval(identifier);
             }
 
-            dispatch(nextFrame(updatedChars));
+            dispatch(nextFrame({uiBranch: currentPage, charStats: updatedChars}));
+
         });
         dispatch(updateToken({token: identifier, currentPage: uiBranch}));
 
     } else if(currentPage != uiBranch && currentIdentifier == -1) {
 
         let identifier: number = setInterval(() => {
-            let charStats: Map<UIBranches, CharacterStats[]> = useSelector((state: RootState) => state.animation.characterTracker);
+            let charTrackers: CharacterTracker[] = useSelector((state: RootState) => state.animation.characterTracker);
+            let index: number = charTrackers.findIndex(entry => entry.page == uiBranch)
+            let charStats: CharacterStats[] = charTrackers[index].chars;
 
-            updatedChars = engineUpdate(charStats, uiBranch)
+            let next_game_tick: DOMHighResTimeStamp = performance.now()
 
+            let updatedChars: CharacterStats[];
+            while() { //implement your frame pacing here
+                updatedChars = engineUpdate(charStats, uiBranch)
+
+            }
+
+            //implement your frame pacing here as well
             let forwardResult: EngineForwardResult = engineForward(updatedChars, uiBranch);
 
             if(forwardResult.moveComplete) {
                 clearInterval(identifier);
             }
 
-            dispatch(nextFrame(updatedChars));
+            dispatch(nextFrame({uiBranch: currentPage, charStats: updatedChars}));
         });
         dispatch(updateToken({token: identifier, currentPage: uiBranch}));
     }
@@ -93,17 +120,16 @@ const EngineCycle = (dispatch: Dispatch, currentPage: UIBranches, currentIdentif
 
 export type EngineForwardResult = {
     moveComplete: boolean,
-    charStats: Map<UIBranches, CharacterStats[]>,
+    charStats: CharacterStats[],
 }
 
-const engineUpdate = (charStats: Map<UIBranches, CharacterStats[]>, _page: UIBranches) => {
+const engineUpdate = (charStats: CharacterStats[], _page: UIBranch) => {
     return charStats;
 }
 
-const engineForward = (charStats: Map<UIBranches, CharacterStats[]>, page: UIBranches): EngineForwardResult => {
-    let updatedCharStats = charStats.get(page);
+const engineForward = (charStats: CharacterStats[], _page: UIBranch): EngineForwardResult => {
+    let updatedCharStats = charStats;
     let animationDone = true;
 
-
-    return {moveComplete: animationDone, charStats: charStats.set(page, updatedCharStats)};
+    return {moveComplete: animationDone, charStats: updatedCharStats};
 }

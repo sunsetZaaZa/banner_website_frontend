@@ -1,0 +1,22 @@
+.controlsBoxBorderClosed {
+    width:120px;
+    height:25px;
+    border-style:solid; border-width:3px;
+    position: absolute; 
+}
+
+.controlsBoxBorderOpen {
+    width:120px;
+    height:25px;
+    border-style:dashed; border-width:3px;
+    position: absolute; 
+}
+
+.controlsBoxInner {
+    position: absolute;
+    border: none; 
+    width:124px; 
+    height:29px; 
+    top:-2px;
+    left:-2px;
+}

@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import animationReducer from './slices/AnimationSlice.ts'
+import controlPanelReducer from './slices/ControlPanelSlice.ts'
 
 export const store = configureStore({
   reducer: {
     animation: animationReducer,
-  },
+    controlPanel: controlPanelReducer
+  }, 
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

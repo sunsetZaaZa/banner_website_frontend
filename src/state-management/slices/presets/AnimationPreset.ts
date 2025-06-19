@@ -2,69 +2,75 @@ import { AnimationBoundingShape, MovementDirection } from "../../models/Animatio
 import { CharacterStats, TypeOfCharacter } from "../../models/CharacterStats";
 import { PageAnimationInfluence } from "../../models/PageAnimationInfluence";
 import { PageBreakdown } from "../../models/RuntimeAnimationMetadata";
-import { UIBranches } from "../../models/UIBranches";
+import { UIBranch } from "../../models/UIBranch";
 
-export interface AnimationState {
-    identifier: number;
-    runtimeMetadata: Map<UIBranches, PageBreakdown[]>;
-    characterTracker: Map<UIBranches, CharacterStats[]>;
-    previousPage: UIBranches;
-    currentPage: UIBranches;
-    pageInfluences:  Map<UIBranches, PageAnimationInfluence | null>;
+export type RuntimeMetadata = {
+    page: UIBranch,
+    breakdown: PageBreakdown[]
 }
+
+export type CharacterTracker = {
+    page: UIBranch,
+    chars: CharacterStats[]
+}
+
+export type PageInfluence = {
+    page: UIBranch,
+    chars: PageAnimationInfluence | null
+}
+
+export type AnimationState = {
+    identifier: number;
+    runtimeMetadata: RuntimeMetadata[];
+    characterTracker: CharacterTracker[];
+    previousPage: UIBranch;
+    currentPage: UIBranch;
+    pageInfluences: PageInfluence[];
+} 
 
 export const initialState: AnimationState = {
     identifier: -1,
-    runtimeMetadata: new Map<UIBranches, PageBreakdown[]>([
-        [
-            UIBranches.homepage, [
+    runtimeMetadata: [
+        {
+            page: UIBranch.homepage,
+            breakdown: [
                 {
                     type: TypeOfCharacter.leftBlimp | TypeOfCharacter.rightBlimp, howMany: 3
                 }, 
                 {
                     type: TypeOfCharacter.crunch, howMany: 1
                 }
-            ],
-        ],
-        [
-            UIBranches.mobileapps, []
-        ],
-        [
-            UIBranches.contactEstafette, []
-        ],
-        [
-            UIBranches.consulting, []
-        ],
-        [
-            UIBranches.libraries, [
-                {
-                    type: TypeOfCharacter.leftBlimp | TypeOfCharacter.rightBlimp, howMany: 3
-                }, 
-                {
-                    type: TypeOfCharacter.crunch, howMany: 1
-                }
-            ],
-        ],
-        [
-            UIBranches.cciea, [
-                {
-                    type: TypeOfCharacter.leftBlimp | TypeOfCharacter.rightBlimp, howMany: 3
-                }, 
-                {
-                    type: TypeOfCharacter.crunch, howMany: 1
-                }
-            ],
-        ],
-        [
-            UIBranches.contact, []
-        ],
-        [
-            UIBranches.userprivacy, []
-        ],
-    ]),
-    characterTracker: new Map<UIBranches, CharacterStats[]>([
-        [
-            UIBranches.homepage, [
+            ]
+        },
+        {
+            page: UIBranch.mobileapps,
+            breakdown: []
+        },
+        {
+            page: UIBranch.contactEstafette,
+            breakdown: []
+        },
+        {
+            page: UIBranch.consulting,
+            breakdown: []
+        },
+        {
+            page: UIBranch.libraries,
+            breakdown: []
+        },
+        {
+            page: UIBranch.cciea,
+            breakdown: []
+        },
+        {
+            page: UIBranch.contact,
+            breakdown: []
+        }
+    ],
+    characterTracker: [ 
+        {
+            page: UIBranch.homepage,
+            chars: [
                 {
                     prefix: null, type: TypeOfCharacter.speakingCrunch, identifier: 'crunch', index: 1, attachedTo: 'blimp1', 
                     currentX: 30, currentY: 50, preCalculated: false, movement: { xInterval: 10, yInterval: 10, directionOne: MovementDirection.right, directionTwo: MovementDirection.right, 
@@ -93,19 +99,23 @@ export const initialState: AnimationState = {
                                                                                  rotateDegree: 0, xRate: 1, yRate: 1 }, 
                     updated: false, active: true, toRender: true
                 }
-            ]              
-        ],
-        [
-            UIBranches.mobileapps, []  
-        ],
-        [
-            UIBranches.contactEstafette, []
-        ],
-        [
-            UIBranches.consulting, []
-        ],
-        [
-            UIBranches.libraries, [
+            ]
+        }, 
+        {
+            page: UIBranch.mobileapps,
+            chars: []
+        },
+        {
+            page: UIBranch.contactEstafette,
+            chars: []
+        },
+        {
+            page: UIBranch.contactEstafette,
+            chars: []
+        },
+        {
+            page: UIBranch.libraries,
+            chars: [
                 {
                     prefix: null, type: TypeOfCharacter.crunch, identifier: 'crunch', index: 1, attachedTo: 'blimp1', 
                     currentX: 30, currentY: 78, preCalculated: false, movement: { xInterval: 10, yInterval: 10, directionOne: MovementDirection.right, directionTwo: MovementDirection.right, 
@@ -134,10 +144,11 @@ export const initialState: AnimationState = {
                                                                                  rotateDegree: 0, xRate: 1, yRate: 1 }, 
                     updated: false, active: true, toRender: true
                 }
-            ]  
-        ],
-        [
-            UIBranches.cciea, [
+            ] 
+        },
+        {
+            page: UIBranch.cciea,
+            chars: [
                 {
                     prefix: null, type: TypeOfCharacter.crunch, identifier: 'crunch', index: 1, attachedTo: 'blimp1', 
                     currentX: 30, currentY: 78, preCalculated: false, movement: { xInterval: 10, yInterval: 10, directionOne: MovementDirection.right, directionTwo: MovementDirection.right, 
@@ -167,9 +178,10 @@ export const initialState: AnimationState = {
                     updated: false, active: true, toRender: true
                 }
             ]  
-        ],
-        [
-            UIBranches.contact, [
+        },
+        {
+            page: UIBranch.contact,
+            chars: [
                 {
                     prefix: null, type: TypeOfCharacter.leftBlimp | TypeOfCharacter.rightBlimp, identifier: 'blimp', index: 1, attachedTo: 'crunch1', 
                     currentX: 20, currentY: 100, preCalculated: false, movement: { xInterval: 10, yInterval: 10, directionOne: MovementDirection.right, directionTwo: MovementDirection.right, 
@@ -192,21 +204,46 @@ export const initialState: AnimationState = {
                     updated: false, active: true, toRender: true
                 }
             ]
-        ],
-        [
-            UIBranches.userprivacy, []
-        ]
-    ]),
-    previousPage: UIBranches.homepage,
-    currentPage: UIBranches.homepage,
-    pageInfluences: new Map<UIBranches, PageAnimationInfluence | null>([
-        [UIBranches.homepage, PageAnimationInfluence.linear],
-        [UIBranches.mobileapps, null],
-        [UIBranches.contactEstafette, null],
-        [UIBranches.consulting, null],
-        [UIBranches.libraries, PageAnimationInfluence.linear],
-        [UIBranches.cciea, PageAnimationInfluence.linear],
-        [UIBranches.contact, null],
-        [UIBranches.userprivacy, null],
-    ])
+        },
+        {
+            page: UIBranch.userprivacy,
+            chars: []
+        }
+    ],
+    previousPage: UIBranch.homepage,
+    currentPage: UIBranch.homepage,
+    pageInfluences: [
+        {
+            page: UIBranch.homepage,
+            chars: PageAnimationInfluence.linear
+        },
+        {
+            page: UIBranch.mobileapps,
+            chars: null
+        },
+        {
+            page: UIBranch.contactEstafette,
+            chars: null
+        },
+        {
+            page: UIBranch.consulting,
+            chars: null
+        },
+        {
+            page: UIBranch.libraries,
+            chars: PageAnimationInfluence.linear
+        },
+        {
+            page: UIBranch.cciea,
+            chars: PageAnimationInfluence.linear
+        },
+        {
+            page: UIBranch.contact,
+            chars: null
+        },
+        {
+            page: UIBranch.userprivacy,
+            chars: null
+        }
+    ]
 }

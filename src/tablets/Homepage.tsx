@@ -6,28 +6,34 @@ import { useSelector } from 'react-redux';
 import NavGuide from "../components/NavGuide/NavGuide";
 import { BlimpCrunchCords } from '../components/BlimpsNCrunch/BlimpCrunchCords';
 import { BlimpsNCrunch } from '../components/BlimpsNCrunch/BlimpsNCrunch';
-import { UIBranches } from '../state-management/models/UIBranches';
+import { UIBranch } from '../state-management/models/UIBranch';
 
 import { TypeOfCharacter } from '../state-management/models/CharacterStats';
 import {SpeakingCrunch} from '../components/Crunch/SpeakingCrunch';
 import { BlimpDirectedRight } from '../components/Blimp/BlimpDirectedRight';
 import { BlimpDirectedLeft } from '../components/Blimp/BlimpDirectedLeft';
+import { ControlPanelToggle } from '../components/ControlPanel/ControlPanelToggle/ControlPanelToggle';
 
 
 export default function HomePage() {
     let charStats = useSelector((state: RootState) => state.animation);
+    let controlPanel = useSelector((state: RootState) => state.controlPanel);
 
     let autoGen = [];
     if(charStats != undefined) {
-        charStats.characterTracker.get(UIBranches.homepage).forEach((entry, index) => {
-            if(entry.type == TypeOfCharacter.rightBlimp) {
-                autoGen.push(<BlimpDirectedRight key={index} currentX={entry.currentX} currentY={entry.currentY}></BlimpDirectedRight>)
-            } else if(entry.type == TypeOfCharacter.leftBlimp) {
-                autoGen.push(<BlimpDirectedLeft key={index} currentX={entry.currentX} currentY={entry.currentY}></BlimpDirectedLeft>)
-            } else if(entry.type == TypeOfCharacter.speakingCrunch) {
-                autoGen.push(<SpeakingCrunch key={index} currentX={entry.currentX} currentY={entry.currentY}></SpeakingCrunch>)
+        charStats.characterTracker.forEach((charTrackEntry, idx) => {
+            if(charTrackEntry.page == UIBranch.homepage) {
+                charTrackEntry.chars.forEach((entry, index) => {
+                    if(entry.type == TypeOfCharacter.rightBlimp) {
+                        autoGen.push(<BlimpDirectedRight key={index} currentX={entry.currentX} currentY={entry.currentY}></BlimpDirectedRight>)
+                    } else if(entry.type == TypeOfCharacter.leftBlimp) {
+                        autoGen.push(<BlimpDirectedLeft key={index} currentX={entry.currentX} currentY={entry.currentY}></BlimpDirectedLeft>)
+                    } else if(entry.type == TypeOfCharacter.speakingCrunch) {
+                        autoGen.push(<SpeakingCrunch key={index} currentX={entry.currentX} currentY={entry.currentY}></SpeakingCrunch>)
+                    }
+                });
             }
-        }); 
+        });
     } else {
         const details : BlimpCrunchCords = {
             crunchY: 30,
@@ -44,6 +50,10 @@ export default function HomePage() {
 
     return (
         <span>
+            <span style={{marginTop: '5px'}}>
+                <ControlPanelToggle showOpen={controlPanel.openControlPanel}></ControlPanelToggle>
+            </span>
+
             <NavGuide></NavGuide>
             {autoGen}
             <span style={{display: 'inline-block', margin: '60px 0px 0px 170px'}}>

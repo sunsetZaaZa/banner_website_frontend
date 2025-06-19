@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import NavGuide from "../components/NavGuide/NavGuide";
 import { BlimpCrunchCords } from '../components/BlimpsNCrunch/BlimpCrunchCords';
 import { BlimpsNCrunch } from '../components/BlimpsNCrunch/BlimpsNCrunch';
-import { UIBranches } from '../state-management/models/UIBranches';
+import { UIBranch } from '../state-management/models/UIBranch';
 
 import { TypeOfCharacter } from '../state-management/models/CharacterStats';
 import { BlimpDirectedRight } from '../components/Blimp/BlimpDirectedRight';
@@ -19,15 +19,19 @@ export default function OuterfacingBusinessContact() {
 
     let autoGen = [];
     if(charStats != undefined) {
-        charStats.characterTracker.get(UIBranches.contact).forEach((entry, index) => {
-            if(entry.type == TypeOfCharacter.rightBlimp) {
-                autoGen.push(<BlimpDirectedRight key={index} currentX={entry.currentX} currentY={entry.currentY}></BlimpDirectedRight>)
-            } else if(entry.type == TypeOfCharacter.leftBlimp) {
-                autoGen.push(<BlimpDirectedLeft key={index} currentX={entry.currentX} currentY={entry.currentY}></BlimpDirectedLeft>)
-            } else if(entry.type == TypeOfCharacter.crunch) {
-                autoGen.push(<Crunch key={index} currentX={entry.currentX} currentY={entry.currentY}></Crunch>)
+        charStats.characterTracker.forEach((charTrackEntry, idx) => {
+            if(charTrackEntry.page == UIBranch.contact) {
+                charTrackEntry.chars.forEach((entry, index) => {
+                    if(entry.type == TypeOfCharacter.rightBlimp) {
+                        autoGen.push(<BlimpDirectedRight key={index} currentX={entry.currentX} currentY={entry.currentY}></BlimpDirectedRight>)
+                    } else if(entry.type == TypeOfCharacter.leftBlimp) {
+                        autoGen.push(<BlimpDirectedLeft key={index} currentX={entry.currentX} currentY={entry.currentY}></BlimpDirectedLeft>)
+                    } else if(entry.type == TypeOfCharacter.crunch) {
+                        autoGen.push(<Crunch key={index} currentX={entry.currentX} currentY={entry.currentY}></Crunch>)
+                    }
+                });
             }
-        }); 
+        });
     } else {
         const details : BlimpCrunchCords = {
             crunchY: undefined,

@@ -1,4 +1,4 @@
-export enum UIBranches {
+export enum UIBranch {
     homepage = 1,
     mobileapps = 2,
     contactEstafette = 3,
